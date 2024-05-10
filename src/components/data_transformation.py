@@ -56,8 +56,8 @@ class DataTransformation:
                 ]
             )
 
-            logging.info("Numerical columns standard scaling completed")
-            logging.info("Categorical columns encoding completed")
+            logging.info(f"Categorical columns: {categorical_columns}")
+            logging.info(f"Numerical columns: {numerical_columns}")
 
             preprocessor=ColumnTransformer (
                 [
@@ -71,6 +71,7 @@ class DataTransformation:
             raise CustomException(e, sys)
         
     def initiate_data_transformation (self, train_path, test_path):
+
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
@@ -103,6 +104,11 @@ class DataTransformation:
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
             logging.info(f"Saved preprocessing object.")
+
+            save_object(
+                file_path=self.data_transformation_config.preprocessor_obj_file_path,
+                obj=preprocessing_obj        
+            )
 
             return (
                 train_arr,
